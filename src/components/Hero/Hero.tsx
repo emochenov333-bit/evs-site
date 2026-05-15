@@ -16,7 +16,6 @@ const presentations = [
     href: '/company-presentation.pdf',
   },
   
-  
 ] as const
 
 export function Hero() {
