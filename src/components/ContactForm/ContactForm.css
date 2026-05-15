@@ -1,0 +1,128 @@
+.form-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.form-section__glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(59, 130, 246, 0.15), transparent 65%);
+  pointer-events: none;
+}
+
+.form-section__inner {
+  max-width: 640px;
+}
+
+.form {
+  padding: 2.5rem;
+}
+
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form__row .form__field {
+  margin-bottom: 0;
+}
+
+.form__field span {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.form__field input,
+.form__field textarea {
+  width: 100%;
+  padding: 1rem 1.125rem;
+  font-size: 1rem;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  resize: vertical;
+}
+
+.form__field input::placeholder,
+.form__field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form__field input:focus,
+.form__field textarea:focus {
+  outline: none;
+  border-color: var(--border-glow);
+  box-shadow: 0 0 0 3px var(--accent-glow-soft), 0 0 20px rgba(59, 130, 246, 0.1);
+}
+
+.form__field input:disabled,
+.form__field textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form__submit {
+  width: 100%;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.form__success {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.form__success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  background: var(--accent-glow-soft);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+  box-shadow: var(--shadow-neon);
+}
+
+.form__success h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form__success p {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 560px) {
+  .form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    padding: 1.5rem;
+  }
+}
