@@ -29,6 +29,9 @@ function formatLeadMessage({ name, phone, comment }: LeadFormData): string {
 export async function sendLeadToTelegram(data: LeadFormData): Promise<void> {
   const { token, chatId } = getTelegramConfig()
 
+  console.log('TOKEN:', token)
+console.log('CHAT_ID:', chatId)
+
   const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
