@@ -5,52 +5,68 @@ export interface LeadFormData {
 }
 
 function getTelegramConfig() {
-
   const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
   const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID
 
-  if (!token || !chatId) {
-    throw new Error('Telegram credentials are not configured')
+  console.log('TOKEN:', token)
+  console.log('CHAT ID:', chatId)
+
+  if (!token) {
+    throw new Error('Telegram bot token not found')
+  }
+
+  if (!chatId) {
+    throw new Error('Telegram chat id not found')
   }
 
   return { token, chatId }
 }
 
-function formatLeadMessage({ name, , comment }: LeadFormData): string {
-  const message = comment.trim() || '—'
-  return [
-    'Новая заявка с сайта EVS Монтаж',
-    '',
-    `Имя: ${name.trim()}`,
-    `Телефон: ${phone.trim()}`,
-    `Комментарий: ${message}`,
-  ].join('\n')
+function formatLeadMessage(data: LeadFormData) {
+  return `
+🔥 Новая заявка с сайта EVS Монтаж
+
+👤 Имя: ${data.name}
+📞 Телефон: ${data.phone}
+💬 Комментарий: ${data.comment || '—'}
+`
 }
 
-export async function sendLeadToTelegram(data: LeadFormData): Promise<void> {
-  const { token, chatId } = getTelegramConfig()
+export async function sendLeadToTelegram(
+  data: LeadFormData
+): Promise<void> {
+  try {
+    const { token, chatId } = getTelegramConfig()
 
-  console.log('TOKEN:', token)
-console.log('CHAT_ID:', chatId)
+    const url = `https://api.telegram.org/bot${token}/sendMessage`
 
-  const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: formatLeadMessage(data),
-    }),
-  })
+    console.log('SEND URL:', url)
 
-  const result = (await response.json()) as { ok: boolean; description?: string }
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: formatLeadMessage(data),
+      }),
+    })
 
-  console.log('RESULT:', result)
+    console.log('RESPONSE STATUS:', response.status)
 
-  console.log(response)
-console.log(result)
+    const result = await response.json()
 
-if (!response.ok || !result.ok) {
-  console.error('TELEGRAM ERROR:', result)
-  throw new Error(result.description ?? 'Telegram API request failed')
+    console.log('TELEGRAM RESULT:', result)
+
+    if (!response.ok || !result.ok) {
+      console.error('TELEGRAM ERROR:', result)
+      throw new Error(result.description || 'Telegram send failed')
+    }
+
+    console.log('SUCCESS SEND')
+  } catch (error) {
+    console.error('SEND ERROR:', error)
+    throw error
   }
 }
