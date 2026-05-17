@@ -7,21 +7,33 @@ import { Projects } from './components/Projects/Projects'
 import { About } from './components/About/About'
 import { ContactForm } from './components/ContactForm/ContactForm'
 import { Footer } from './components/Footer/Footer'
+import Calculator from './components/Calculator/Calculator'
 
 function App() {
   return (
     <>
       <div className="noise-overlay" aria-hidden />
+
       <Header />
+
       <main>
         <Hero />
+
         <Services />
+
         <WorkCycle />
+
         <Advantages />
+
         <Projects />
+
         <About />
+
+        <Calculator />
+
         <ContactForm />
       </main>
+
       <Footer />
     </>
   )
