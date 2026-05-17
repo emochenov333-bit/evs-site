@@ -29,9 +29,10 @@ export function ContactForm() {
   }
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log('SUBMIT WORKS')
-    
     e.preventDefault()
+  
+    console.log('SUBMIT WORKS')
+  
     if (loading) return
 
     setLoading(true)
