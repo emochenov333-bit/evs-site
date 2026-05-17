@@ -118,7 +118,7 @@ export function ContactForm() {
               loading={loading}
               disabled={loading}
             >
-              {loading ? 'Отправка...' : 'Отправить заявку'}
+              {loading ? 'Отправка...' : 'ТЕСТ КНОПКИ'}
             </Button>
           </form>
         </Reveal>
