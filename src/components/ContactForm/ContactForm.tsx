@@ -7,7 +7,13 @@ import { Reveal } from '../motion/Reveal'
 import { sendLeadToTelegram } from '../../services/telegram'
 import './ContactForm.css'
 
-const EMPTY_FORM = { name: '', phone: '', comment: '' }
+const EMPTY_FORM = {
+  objectType: '',
+  service: '',
+  area: '',
+  urgency: '',
+  phone: '',
+}
 
 const TOAST_DURATION_MS = 4500
 
@@ -30,9 +36,7 @@ export function ContactForm() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-  
-    console.log('SUBMIT WORKS')
-  
+
     if (loading) return
 
     setLoading(true)
@@ -40,15 +44,30 @@ export function ContactForm() {
 
     try {
       await sendLeadToTelegram({
-        name: form.name,
+        name: 'Калькулятор EVS Монтаж',
         phone: form.phone,
-        comment: form.comment,
+        comment: `
+Тип объекта: ${form.objectType}
+
+Тип работ: ${form.service}
+
+Площадь: ${form.area} м²
+
+Срочность: ${form.urgency}
+        `,
       })
 
       setForm(EMPTY_FORM)
-      setToast({ message: 'Заявка успешно отправлена', type: 'success' })
+
+      setToast({
+        message: 'Заявка успешно отправлена',
+        type: 'success',
+      })
     } catch {
-      setToast({ message: 'Ошибка отправки', type: 'error' })
+      setToast({
+        message: 'Ошибка отправки',
+        type: 'error',
+      })
     } finally {
       setLoading(false)
     }
@@ -57,6 +76,7 @@ export function ContactForm() {
   return (
     <section className="section form-section" id="form">
       <motion.div className="form-section__glow" aria-hidden />
+
       <Toast
         message={toast?.message ?? ''}
         type={toast?.type ?? 'success'}
@@ -66,50 +86,114 @@ export function ContactForm() {
 
       <div className="container form-section__inner">
         <SectionHeader
-          label="Заявка"
+          label="Калькулятор"
           title="Рассчитать стоимость проекта"
-          description="Оставьте контакты — инженер свяжется с вами и подготовит предварительную смету."
+          description="Заполните параметры объекта и получите предварительный расчет."
         />
 
         <Reveal>
-          <form className="form glass glass-glow" onSubmit={onSubmit} noValidate>
+          <form
+            className="form glass glass-glow"
+            onSubmit={onSubmit}
+            noValidate
+          >
             <div className="form__row">
               <label className="form__field">
-                <span>Имя</span>
-                <input
-                  type="text"
-                  name="name"
+                <span>Тип объекта</span>
+
+                <select
                   required
                   disabled={loading}
-                  value={form.name}
-                  onChange={(e) => updateField('name', e.target.value)}
-                  placeholder="Как к вам обращаться"
-                />
+                  value={form.objectType}
+                  onChange={(e) =>
+                    updateField('objectType', e.target.value)
+                  }
+                >
+                  <option value="">Выберите объект</option>
+                  <option value="Квартира">Квартира</option>
+                  <option value="Дом">Дом</option>
+                  <option value="Офис">Офис</option>
+                  <option value="Ресторан">Ресторан</option>
+                  <option value="Торговый центр">Торговый центр</option>
+                  <option value="Производство">Производство</option>
+                </select>
               </label>
+
               <label className="form__field">
-                <span>Телефон</span>
-                <input
-                  type="tel"
-                  name="phone"
+                <span>Тип работ</span>
+
+                <select
                   required
                   disabled={loading}
-                  value={form.phone}
-                  onChange={(e) => updateField('phone', e.target.value)}
-                  placeholder="+998 (___) ___-__-__"
-                />
+                  value={form.service}
+                  onChange={(e) =>
+                    updateField('service', e.target.value)
+                  }
+                >
+                  <option value="">Выберите услугу</option>
+                  <option value="Общестрой">Общестрой</option>
+                  <option value="Видеонаблюдение">Видеонаблюдение</option>
+                  <option value="Пожарная сигнализация">
+                    Пожарная сигнализация
+                  </option>
+                  <option value="СКУД">СКУД</option>
+                  <option value="Электромонтаж">Электромонтаж</option>
+                  <option value="ЛВС / СКС">ЛВС / СКС</option>
+                  <option value="Вентиляция">Вентиляция</option>
+                </select>
               </label>
             </div>
+
+            <div className="form__row">
+              <label className="form__field">
+                <span>Площадь объекта</span>
+
+                <input
+                  type="number"
+                  required
+                  disabled={loading}
+                  value={form.area}
+                  onChange={(e) =>
+                    updateField('area', e.target.value)
+                  }
+                  placeholder="Например: 250"
+                />
+              </label>
+
+              <label className="form__field">
+                <span>Срочность</span>
+
+                <select
+                  required
+                  disabled={loading}
+                  value={form.urgency}
+                  onChange={(e) =>
+                    updateField('urgency', e.target.value)
+                  }
+                >
+                  <option value="">Выберите срочность</option>
+                  <option value="Срочно">Срочно</option>
+                  <option value="Стандартно">Стандартно</option>
+                  <option value="Без спешки">Без спешки</option>
+                </select>
+              </label>
+            </div>
+
             <label className="form__field">
-              <span>Комментарий</span>
-              <textarea
-                name="comment"
-                rows={4}
+              <span>Телефон</span>
+
+              <input
+                type="tel"
+                required
                 disabled={loading}
-                value={form.comment}
-                onChange={(e) => updateField('comment', e.target.value)}
-                placeholder="Тип объекта, площадь, сроки, задачи..."
+                value={form.phone}
+                onChange={(e) =>
+                  updateField('phone', e.target.value)
+                }
+                placeholder="+998 (__) ___-__-__"
               />
             </label>
+
             <Button
               type="submit"
               variant="primary"
@@ -118,7 +202,7 @@ export function ContactForm() {
               loading={loading}
               disabled={loading}
             >
-              {loading ? 'Отправка...' : 'Отправить заявку '}
+              {loading ? 'Отправка...' : 'Получить расчет'}
             </Button>
           </form>
         </Reveal>
