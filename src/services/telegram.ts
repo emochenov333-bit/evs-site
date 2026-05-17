@@ -42,11 +42,14 @@ console.log('CHAT_ID:', chatId)
   })
 
   const result = (await response.json()) as { ok: boolean; description?: string }
+  
+  console.log('RESULT:', result)
 
   console.log(response)
 console.log(result)
 
-  if (!response.ok || !result.ok) {
-    throw new Error(result.description ?? 'Telegram API request failed')
+if (!response.ok || !result.ok) {
+  console.error('TELEGRAM ERROR:', result)
+  throw new Error(result.description ?? 'Telegram API request failed')
   }
 }
