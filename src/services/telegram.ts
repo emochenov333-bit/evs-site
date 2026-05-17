@@ -5,6 +5,7 @@ export interface LeadFormData {
 }
 
 function getTelegramConfig() {
+  
   const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
   const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID
 
@@ -42,7 +43,7 @@ console.log('CHAT_ID:', chatId)
   })
 
   const result = (await response.json()) as { ok: boolean; description?: string }
-  
+
   console.log('RESULT:', result)
 
   console.log(response)
