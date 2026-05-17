@@ -29,8 +29,6 @@ function App() {
 
         <About />
 
-        <Calculator />
-
         <ContactForm />
       </main>
 
