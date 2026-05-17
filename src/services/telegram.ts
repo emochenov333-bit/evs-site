@@ -5,7 +5,7 @@ export interface LeadFormData {
 }
 
 function getTelegramConfig() {
-  
+
   const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
   const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID
 
@@ -16,7 +16,7 @@ function getTelegramConfig() {
   return { token, chatId }
 }
 
-function formatLeadMessage({ name, phone, comment }: LeadFormData): string {
+function formatLeadMessage({ name, , comment }: LeadFormData): string {
   const message = comment.trim() || '—'
   return [
     'Новая заявка с сайта EVS Монтаж',
