@@ -40,6 +40,9 @@ export async function sendLeadToTelegram(data: LeadFormData): Promise<void> {
 
   const result = (await response.json()) as { ok: boolean; description?: string }
 
+  console.log(response)
+console.log(result)
+
   if (!response.ok || !result.ok) {
     throw new Error(result.description ?? 'Telegram API request failed')
   }
